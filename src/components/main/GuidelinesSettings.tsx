@@ -1,36 +1,34 @@
-import { Upload } from "lucide-react"
-import { useRef } from "react"
+
+import useStore from "../../store/store";
+import SectionCard from "./SectionCard";
+import BrandDescription from "./setting-fields/BrandDescription";
+import BrandName from "./setting-fields/BrandName";
+import FileUpload from "./setting-fields/FileUpload";
 
 const GuidelinesSettings = () => {
-  const inputFileElement = useRef(null);
+  const sections = useStore((state) => state.sections);
+  const addSectionVisibility = useStore((state) => state.addSectionVisibility);
+  const currentSection = useStore((state) => state.currentSection);
 
   return (
-    <div className="w-[30vw] flex flex-col p-8 border-l-2 border-green-light items-start">
+    <div className="w-[30vw] flex flex-col p-8 border-l-2 border-green-light items-start overflow-scroll">
         <div className="text-xl font-medium">Settings</div>
         <div className="flex flex-col w-full py-10 gap-10">
-            <div className="flex flex-col gap-2.5 w-full">
-                <label className="text-sm" htmlFor="brand-guidelines-field">
-                    Brand Guideline name
-                </label>
-                <input id="brand-guidelines-field" className="p-2 border-2 border-green-light rounded-lg" />
-            </div>
-            <div className="flex flex-col gap-2.5 w-full">
-                <label className="text-sm" htmlFor="brand-guidelines-image-field">
-                    Brand Guideline image
-                </label>
-                <input id="brand-guidelines-image-field" type="file" hidden ref={inputFileElement}/>
-                <div className="flex flex-col gap-2 items-center justify-center border-2 border-green-light w-full h-40 rounded-xl cursor-pointer">
-                    <Upload/>
-                    <div className="text-xs flex items-center">
-                        Drag a file or click to upload
-                    </div>
+            <BrandName/>
+            <FileUpload/>
+            <BrandDescription/>
+        </div>
+        <div className="w-full">
+            <div className="text-xl font-medium">Sections</div>
+            {/* Sections list */}
+            {sections.length > 0 && <div className="w-full my-10 flex flex-col gap-4">
+                {sections.map((section, index) => <SectionCard key={index} section={section} active={section === currentSection}/>)}
+            </div>}
+            {/* Add section */}
+            <div className="relative w-full h-[2px] rounded-full bg-green-dark my-8">
+                <div onClick={() => addSectionVisibility()} className="cursor-pointer flex items-center justify-center absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 h-1 w-1 bg-green-dark p-3.5 text-white rounded-full">
+                    +
                 </div>
-            </div>
-            <div className="flex flex-col gap-2.5 w-full">
-                <label className="text-sm" htmlFor="brand-guidelines-description-field">
-                    Brand Guideline Description
-                </label>
-                <textarea id="brand-guidelines-description-field" className="border-2 border-green-light p-2 rounded-lg"/>
             </div>
         </div>
     </div>

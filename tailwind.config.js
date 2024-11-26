@@ -7,9 +7,9 @@ export default {
   theme: {
     extend: {
       colors: {
-        button: "#005958",
         green: {
-          light: "#e9f2f2"
+          light: "#e9f2f2",
+          dark: "#005958",
         }
       }
     },
